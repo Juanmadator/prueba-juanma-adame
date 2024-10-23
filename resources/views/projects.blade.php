@@ -32,6 +32,9 @@
             <ul id="projectItems" class="list-group">
 
             </ul>
+
+            <div id="projectItems" class="list-group"></div>
+<div id="pagination" class="mt-3 d-flex justify-content-center"></div>
         </div>
     </div>
 

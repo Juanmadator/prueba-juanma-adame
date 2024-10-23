@@ -18,4 +18,21 @@ class Project extends Model
         'end_date',
         'description',
     ];
+
+
+    /**
+     * Relación: Un proyecto pertenece a un usuario.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_name', 'name'); // Relación con el nombre del usuario
+    }
+
+    /**
+     * Relación: Un proyecto tiene muchas tareas.
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'project_id');
+    }
 }

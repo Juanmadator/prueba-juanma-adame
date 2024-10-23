@@ -39,4 +39,21 @@ class Task extends Model
         Schema::dropIfExists('tasks');
     }
 
+
+    /**
+     * Relación: Una tarea pertenece a un proyecto.
+     */
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * Relación: Una tarea pertenece a un usuario (a través del proyecto).
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_name', 'name'); // Relación con el nombre del usuario
+    }
+
 }

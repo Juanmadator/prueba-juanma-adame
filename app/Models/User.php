@@ -53,6 +53,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'admin' => 'boolean', 
+        'admin' => 'boolean',
     ];
+
+
+     /**
+     * Relación: Un usuario tiene muchos proyectos.
+     */
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'user_name', 'name'); // Relación con el nombre del usuario
+    }
+
+    /**
+     * Relación: Un usuario tiene muchas tareas a través de los proyectos.
+     */
+    public function tasks()
+    {
+        return $this->hasManyThrough(Task::class, Project::class, 'user_name', 'project_id', 'name', 'id');
+    }
 }
