@@ -11,7 +11,7 @@
 8.  **`php artisan serve`**: 
 
 En caso de ejecutar los seeders, los usuarios que se crean: 
-**`correo: uan@example.com  contraseña: password123`**
+**`correo: juan@example.com  contraseña: password123`**
 
 **`correo: maria@example.com contraseña: password123`**
 
