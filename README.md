@@ -2,8 +2,8 @@
 ### Orden de ejecución del proyecto
 
 1. **`composer install`**: 
-2. **`php artisan migrate`**: 
-3. **`npm install`**: 
+2. **`npm install`** : 
+3. **`php artisan migrate`**: 
 4. **`npm run dev` / `npm run build`**:
 5. **`php artisan db:seed --class=UserSeeder`**
 6. **`php artisan db:seed --class=UserSeeder`**
