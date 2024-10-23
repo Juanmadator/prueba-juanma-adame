@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\Models\Task;
 use Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Validator;
 
 class TaskController extends Controller
 {
@@ -32,6 +36,48 @@ class TaskController extends Controller
 
         return response()->json(['message' => 'Tarea guardada con éxito']);
     }
+
+
+
+    public function obtenerTareas(Request $request)
+    {
+        // Validación de datos
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'title' => 'required|string',
+            'user_name' => 'required|string',
+        ]);
+
+        // Asignación de variables
+        $startDate = Carbon::parse($request->input('start_date')); // Conversión a Carbon
+        $endDate = Carbon::parse($request->input('end_date'));
+        $title = $request->input('title');
+        $userName = $request->input('user_name');
+
+        // Consulta a la base de datos
+        $tasks = \DB::table('tasks')
+            ->where('title', $title)
+            ->where('user_name', $userName)
+            ->where('start_time', '>=', $startDate)
+            ->where('start_time', '<=', $endDate)
+            ->get();
+
+       
+
+        // Generar PDF
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('tareas', [
+            'tasks' => $tasks,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'firstTitle' => $title,
+            'userName'=>$userName
+        ]);
+
+    return $pdf->stream('tasks_report.pdf');
+    }
+
 
 
     public function getUserTasks($user)

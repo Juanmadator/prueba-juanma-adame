@@ -10,23 +10,42 @@ class ProjectController extends Controller
 {
     // Método para devolver la vista de gestión de proyectos y la lista de todos los proyectos
     public function index(Request $request)
-    {
-        // Obtener todos los proyectos ordenados de forma descente por ejemplo primero el dia 31 luego el día 29 , etc
-        $projects = Project::orderBy('updated_at', 'desc')->get();
+{
+    // Obtener todos los proyectos ordenados de forma descendente
+    $projects = Project::orderBy('start_date', 'desc')->paginate(7); // 7 proyectos por página
 
-        // Si la solicitud es AJAX, devuelve los proyectos en formato JSON
-        if ($request->ajax()) {
-            return response()->json($projects);
-        }
-
-        //esto es para marcar el menu como active
-        $activeTab = 'proyectos';
-        // Devuelve la vista y pasa la lista de proyectos
-        return view('projects', [
-            'projects' => $projects,
-            'activeTab' => $activeTab
-        ]);
+    // Si la solicitud es AJAX, devuelve los proyectos en formato JSON
+    if ($request->ajax()) {
+        return response()->json($projects);
     }
+
+    // Esto es para marcar el menú como activo
+    $activeTab = 'proyectos';
+    // Devuelve la vista y pasa la lista de proyectos
+    return view('projects', [
+        'projects' => $projects,
+        'activeTab' => $activeTab
+    ]);
+}
+
+public function indexAll(Request $request)
+{
+    // Obtener todos los proyectos ordenados de forma descendente
+    $projects = Project::orderBy('start_date', 'desc')->get(); // Obtener todos sin paginar
+
+    // Si la solicitud es AJAX, devuelve los proyectos en formato JSON
+    if ($request->ajax()) {
+        return response()->json($projects);
+    }
+
+    // Esto es para marcar el menú como activo (opcional)
+    $activeTab = 'proyectos';
+    // Devuelve la vista y pasa la lista de proyectos
+    return view('projects', [
+        'projects' => $projects,
+        'activeTab' => $activeTab
+    ]);
+}
 
     // Método para almacenar y crear un nuevo proyecto
     public function store(Request $request)

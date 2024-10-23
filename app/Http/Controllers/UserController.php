@@ -43,10 +43,16 @@ class UserController extends Controller
     }
 
     // Método para eliminar un usuario
-    public function destroy($id)
+    public function destroy($email)
     {
-        User::destroy($id);
-        return response()->json(['message' => 'Usuario eliminado correctamente']);
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            $user->delete(); // Elimina el usuario
+            return response()->json(['message' => 'Usuario eliminado correctamente']);
+        } else {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
     }
 
     // Método para actualizar un usuario

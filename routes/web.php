@@ -12,42 +12,44 @@ Route::get('/', function () {
     return redirect()->route('usuarios.index'); // Redirige a la ruta de app
 });
 
+
+//para controlar el acceso a rutas que no existen
+Route::fallback(function () {
+    return redirect('/');
+});
+
 // Ruta para la vista del dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Ruta para el layout de la aplicación
-Route::get('/app', function () {
+Route::get('/users', function () {
     $user = Auth::user(); // Obtiene el usuario autenticado
     return view('users', ['user' => $user]); // Pasa el usuario a la vista
 })->name('app');
 
-// Rutas para la gestión de usuarios
-Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
-Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store'); // Ruta para crear un usuario
-Route::apiResource('users', UserController::class); // API resource para usuarios
-// Route::put('/users/{email}', [UserController::class, 'update'])->name('users.update');
+Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index'); // Obtener la lista de usuarios
+Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store'); // Crear un nuevo usuario
+Route::put('/usuarios/{email}', [UserController::class, 'update'])->name('usuarios.update'); // Actualizar un usuario
+Route::delete('/usuarios/{email}', [UserController::class, 'destroy'])->name('usuarios.destroy'); // Eliminar un usuario
 
 // Rutas para la gestión de proyectos
 
 Route::get('/proyectos', [ProjectController::class, 'index'])->name('proyectos.index');
+Route::get('/proyectos/all', [ProjectController::class, 'indexAll'])->name('proyectos.all');
 Route::post('/proyectos', [ProjectController::class, 'store'])->name('proyectos.store'); // Ruta para crear un proyecto
 Route::resource('projects', ProjectController::class); // API resource para proyectos
 
 
 //Ruta para crear la tarea de un proyecto
 Route::post('/tasks',[TaskController::class,'store']);
+Route::post('/tasks/obtener', [TaskController::class, 'obtenerTareas'])->name('tasks.obtener');
+
 
 //Para mostrar las tareas de un usuario en concreto
 Route::get('/tasks/{user}', [TaskController::class, 'getUserTasks'])->name('tasks.user');
 
 
-// Rutas protegidas por autenticación
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';
