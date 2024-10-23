@@ -19,7 +19,7 @@
                 @else
                 <a href="#" id="proyectosError" class="nav-link" data-bs-toggle="modal" data-bs-target="#addProjectModal">
                     <i class="far fa-circle nav-icon"></i>
-                    <p id="miBoton" >Añadir proyecto</p>
+                    <p id="miBoton">Añadir proyecto</p>
                 </a>
                 @endif
 

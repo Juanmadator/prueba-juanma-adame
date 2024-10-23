@@ -305,6 +305,16 @@ var username="{{Auth::check() ? Auth::user()->name: ''}}"
                 $('#myCustomModal').hide();
             });
 
+            $('#miBoton').click(function(){
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Debes ser administrador',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            })
+
+
 
             document.getElementById('cerrarModal').addEventListener('click', function() {
 
@@ -332,7 +342,6 @@ var username="{{Auth::check() ? Auth::user()->name: ''}}"
 
 
     function cargarUsuarios2() {
-        console.log("CARGANDO USUARIOS");
 
         $.ajax({
             url: "{{ route('usuarios.index') }}", // Cambia esta ruta según tu configuración
@@ -475,7 +484,7 @@ var username="{{Auth::check() ? Auth::user()->name: ''}}"
             success: function (response) {
                 $('#projectItems').empty();
                 $('#projectItems').append(`
-                    <li class="list-group-item">
+                    <li class="list-group-item p-3">
                         <div class="row">
                             <div class="col"><b>Nombre</b></div>
                             <div class="col"><b>Fecha</b></div>
@@ -511,7 +520,6 @@ var username="{{Auth::check() ? Auth::user()->name: ''}}"
     }
 
     function cargarProyectos() {
-        console.log("cargando proyectos")
         $.ajax({
             url: "{{ route('proyectos.all') }}", // Cambia esta ruta según tu configuración
             type: "GET",
@@ -658,7 +666,7 @@ var username="{{Auth::check() ? Auth::user()->name: ''}}"
                 });
                 Toast.fire({
                     icon: "error",
-                    title: xhr.responseJSON.message // Mensaje de error del servidor
+                    title: "Debes iniciar sesión" // Mensaje de error del servidor
                 });
                 //cerramos el modal
                 closeTaskModal()
@@ -751,7 +759,7 @@ function createPagination(currentPage, lastPage) {
                     // Determinar si el usuario es administrador
                     const role = user.admin ? 'Administrador' : 'No es administrador';
                     $('#userList').append(`
-                        <li class="list-group-item">
+                        <li class="list-group-item p-2">
                             ${user.name} - ${user.email} (${role})
                             <button onclick="editUser('${user.email}', '${user.name}', ${user.admin})" class="btn btn-warning btn-sm float-right">Editar</button>
                             <button onclick="deleteUser('${user.email}')" class="btn btn-danger btn-sm float-right mr-2">Eliminar</button>
